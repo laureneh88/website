@@ -276,7 +276,7 @@ body {
 .timeline-cards {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 3.5rem;
   padding: 0 1.5rem;
   position: relative;
   z-index: 1;
@@ -294,6 +294,35 @@ body {
 
 .timeline-card--wide {
   width: 200px;
+}
+
+.timeline-card--pair {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.timeline-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.timeline-date {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 400;
+  color: #7C7C7C;
+  letter-spacing: 0.02em;
+}
+
+.timeline-desc {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  color: #FFFFFF;
+  line-height: 1.45;
 }
 
 .timeline-card img {

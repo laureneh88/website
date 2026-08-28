@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 15000);
   }
 
-  setTimeout(triggerWalk, 2000);
+  setTimeout(triggerWalk, 1000);
   setInterval(triggerWalk, 25000);
 
   // Drag-to-scroll on timeline tracks
