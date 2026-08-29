@@ -57,4 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     track.style.cursor = 'grab';
   });
+
+  // Auto-swap only the first crossfade card on a timer
+  const firstCrossfade = document.querySelector('.timeline-card-crossfade');
+  if (firstCrossfade) {
+    let swapped = false;
+    setInterval(() => {
+      swapped = !swapped;
+      firstCrossfade.classList.toggle('swap-active', swapped);
+    }, 4000);
+  }
 });
