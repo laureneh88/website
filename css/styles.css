@@ -208,6 +208,16 @@ body {
   margin-top: 1.25rem;
 }
 
+.work-subtitle {
+  font-family: var(--font-wide);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-heading);
+  letter-spacing: -0.01em;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
 .work-list {
   font-size: var(--size-body);
   color: var(--color-text);
