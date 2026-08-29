@@ -116,6 +116,21 @@ body {
   max-width: 380px;
 }
 
+.bio-tagline {
+  font-size: 18px;
+  color: #FFFFFF;
+  line-height: 1.6;
+  max-width: 380px;
+}
+
+.bio-years {
+  font-size: var(--size-body);
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  margin-top: 1.5rem;
+  max-width: 380px;
+}
+
 .social-links {
   display: flex;
   gap: 1rem;
