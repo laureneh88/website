@@ -58,23 +58,20 @@ document.addEventListener('DOMContentLoaded', () => {
     track.style.cursor = 'grab';
   });
 
-  // Auto-swap only the first crossfade card in the carousel on a timer
-  const firstCrossfade = document.querySelector('.timeline-track .timeline-card-crossfade');
-  if (firstCrossfade) {
-    let swapped = false;
-    setInterval(() => {
-      swapped = !swapped;
-      firstCrossfade.classList.toggle('swap-active', swapped);
-    }, 4000);
-  }
+  // Both carousel crossfades: hover only
+  document.querySelectorAll('.timeline-track .timeline-card-crossfade').forEach(el => {
+    el.addEventListener('mouseenter', () => el.classList.add('swap-active'));
+    el.addEventListener('mouseleave', () => el.classList.remove('swap-active'));
+  });
 
-  // TuneMyMusic 3-step hover crossfade
+  // TuneMyMusic hover crossfade: cycles 12.01 → 12.02 → 12.03 → 12.02 → 12.03...
   const tmm = document.getElementById('tunemymusic-crossfade');
   if (tmm) {
     const screens = tmm.querySelectorAll('.phone-screen');
     const buttons = tmm.querySelectorAll('.phone-button');
     let currentIdx = 0;
     let interval = null;
+    let firstSwap = true;
 
     function showStep(idx) {
       screens.forEach(s => s.classList.remove('active'));
@@ -84,10 +81,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     tmm.addEventListener('mouseenter', () => {
+      firstSwap = true;
+      currentIdx = 1;
+      showStep(currentIdx);
       interval = setInterval(() => {
-        currentIdx = (currentIdx + 1) % screens.length;
+        if (firstSwap) {
+          currentIdx = 2;
+          firstSwap = false;
+        } else {
+          currentIdx = currentIdx === 1 ? 2 : 1;
+        }
         showStep(currentIdx);
-      }, 1500);
+      }, 800);
     });
 
     tmm.addEventListener('mouseleave', () => {
