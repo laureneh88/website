@@ -58,13 +58,42 @@ document.addEventListener('DOMContentLoaded', () => {
     track.style.cursor = 'grab';
   });
 
-  // Auto-swap only the first crossfade card on a timer
-  const firstCrossfade = document.querySelector('.timeline-card-crossfade');
+  // Auto-swap only the first crossfade card in the carousel on a timer
+  const firstCrossfade = document.querySelector('.timeline-track .timeline-card-crossfade');
   if (firstCrossfade) {
     let swapped = false;
     setInterval(() => {
       swapped = !swapped;
       firstCrossfade.classList.toggle('swap-active', swapped);
     }, 4000);
+  }
+
+  // TuneMyMusic 3-step hover crossfade
+  const tmm = document.getElementById('tunemymusic-crossfade');
+  if (tmm) {
+    const screens = tmm.querySelectorAll('.phone-screen');
+    const buttons = tmm.querySelectorAll('.phone-button');
+    let currentIdx = 0;
+    let interval = null;
+
+    function showStep(idx) {
+      screens.forEach(s => s.classList.remove('active'));
+      buttons.forEach(b => b.classList.remove('active'));
+      screens[idx].classList.add('active');
+      if (buttons[idx]) buttons[idx].classList.add('active');
+    }
+
+    tmm.addEventListener('mouseenter', () => {
+      interval = setInterval(() => {
+        currentIdx = (currentIdx + 1) % screens.length;
+        showStep(currentIdx);
+      }, 1500);
+    });
+
+    tmm.addEventListener('mouseleave', () => {
+      clearInterval(interval);
+      currentIdx = 0;
+      showStep(0);
+    });
   }
 });
