@@ -1,4 +1,45 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Typewriter animation
+  const typeEl = document.getElementById('typewriter');
+  if (typeEl) {
+    const lines = [
+      'Demonstrate value in the first 5 seconds',
+      'or it is not going to work'
+    ];
+    let lineIdx = 0;
+    let charIdx = 0;
+    const speed = 70;
+
+    function type() {
+      if (lineIdx >= lines.length) {
+        const cursor = typeEl.querySelector('.typewriter-cursor');
+        if (cursor) cursor.remove();
+        triggerWalk();
+        return;
+      }
+      if (charIdx === 0 && lineIdx > 0) {
+        typeEl.appendChild(document.createElement('br'));
+      }
+      if (charIdx < lines[lineIdx].length) {
+        const cursor = typeEl.querySelector('.typewriter-cursor');
+        if (cursor) cursor.remove();
+        typeEl.appendChild(document.createTextNode(lines[lineIdx][charIdx]));
+        const newCursor = document.createElement('span');
+        newCursor.className = 'typewriter-cursor';
+        newCursor.textContent = '|';
+        typeEl.appendChild(newCursor);
+        charIdx++;
+        setTimeout(type, speed);
+      } else {
+        lineIdx++;
+        charIdx = 0;
+        setTimeout(type, 300);
+      }
+    }
+
+    setTimeout(type, 500);
+  }
+
   const container = document.getElementById('robot-animation');
 
   const anim = lottie.loadAnimation({
@@ -21,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 15000);
   }
 
-  setTimeout(triggerWalk, 1000);
   setInterval(triggerWalk, 25000);
 
   // Drag-to-scroll on timeline tracks
