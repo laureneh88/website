@@ -3,11 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const typeEl = document.getElementById('typewriter');
   if (typeEl) {
     const steps = [
-      { action: 'type', text: 'Demonstrate value in the first 5 seco', speed: 70 },
+      { action: 'type', text: 'Demonstrate value in the first 10 seco', speed: 70 },
       { action: 'pause', duration: 400 },
-      { action: 'delete', count: 6, speed: 50 },
+      { action: 'delete', count: 7, speed: 50 },
       { action: 'pause', duration: 200 },
-      { action: 'type', text: '10 seconds', speed: 70 },
+      { action: 'type', text: '5 seconds', speed: 70 },
       { action: 'pause', duration: 300 },
       { action: 'break' },
       { action: 'type', text: 'or it is not going to work.', speed: 70 },
