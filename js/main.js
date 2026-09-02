@@ -1,43 +1,81 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Typewriter animation
+  // Typewriter animation with correction
   const typeEl = document.getElementById('typewriter');
   if (typeEl) {
-    const lines = [
-      'Demonstrate value in the first 5 seconds',
-      'or it is not going to work'
+    const steps = [
+      { action: 'type', text: 'Demonstrate value in the first 5 seco', speed: 70 },
+      { action: 'pause', duration: 400 },
+      { action: 'delete', count: 6, speed: 50 },
+      { action: 'pause', duration: 200 },
+      { action: 'type', text: '10 seconds', speed: 70 },
+      { action: 'pause', duration: 300 },
+      { action: 'break' },
+      { action: 'type', text: 'or it is not going to work.', speed: 70 },
     ];
-    let lineIdx = 0;
-    let charIdx = 0;
-    const speed = 70;
 
-    function type() {
-      if (lineIdx >= lines.length) {
+    let textContent = '';
+    let stepIdx = 0;
+    let charIdx = 0;
+
+    function updateDisplay() {
+      typeEl.innerHTML = '';
+      const parts = textContent.split('\n');
+      parts.forEach((part, i) => {
+        if (i > 0) typeEl.appendChild(document.createElement('br'));
+        typeEl.appendChild(document.createTextNode(part));
+      });
+      const cursor = document.createElement('span');
+      cursor.className = 'typewriter-cursor';
+      cursor.textContent = '|';
+      typeEl.appendChild(cursor);
+    }
+
+    function runStep() {
+      if (stepIdx >= steps.length) {
         const cursor = typeEl.querySelector('.typewriter-cursor');
         if (cursor) cursor.remove();
         triggerWalk();
         return;
       }
-      if (charIdx === 0 && lineIdx > 0) {
-        typeEl.appendChild(document.createElement('br'));
-      }
-      if (charIdx < lines[lineIdx].length) {
-        const cursor = typeEl.querySelector('.typewriter-cursor');
-        if (cursor) cursor.remove();
-        typeEl.appendChild(document.createTextNode(lines[lineIdx][charIdx]));
-        const newCursor = document.createElement('span');
-        newCursor.className = 'typewriter-cursor';
-        newCursor.textContent = '|';
-        typeEl.appendChild(newCursor);
-        charIdx++;
-        setTimeout(type, speed);
-      } else {
-        lineIdx++;
+
+      const step = steps[stepIdx];
+
+      if (step.action === 'type') {
+        if (charIdx < step.text.length) {
+          textContent += step.text[charIdx];
+          updateDisplay();
+          charIdx++;
+          setTimeout(runStep, step.speed);
+        } else {
+          stepIdx++;
+          charIdx = 0;
+          runStep();
+        }
+      } else if (step.action === 'delete') {
+        if (charIdx < step.count) {
+          textContent = textContent.slice(0, -1);
+          updateDisplay();
+          charIdx++;
+          setTimeout(runStep, step.speed);
+        } else {
+          stepIdx++;
+          charIdx = 0;
+          runStep();
+        }
+      } else if (step.action === 'pause') {
+        stepIdx++;
         charIdx = 0;
-        setTimeout(type, 300);
+        setTimeout(runStep, step.duration);
+      } else if (step.action === 'break') {
+        textContent += '\n';
+        updateDisplay();
+        stepIdx++;
+        charIdx = 0;
+        setTimeout(runStep, 200);
       }
     }
 
-    setTimeout(type, 500);
+    setTimeout(runStep, 500);
   }
 
   const container = document.getElementById('robot-animation');
