@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Sunday Table — Recipes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Karla:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream: #F7F2E7;
+    --paper: #FCF9F2;
+    --olive: #3E4A2E;
+    --olive-deep: #2A331F;
+    --tomato: #C1442A;
+    --lemon: #DCA82E;
+    --ink: #2C2A22;
+    --line: rgba(44,42,34,0.14);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Karla', sans-serif;
+    font-size:17px;
+    line-height:1.6;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin:0;
+    color:var(--olive-deep);
+  }
+  a{color:inherit;}
+
+  header.site{
+    padding:2.2rem 1.5rem 1.4rem;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    max-width:920px;
+    margin:0 auto;
+  }
+  .brand{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:1.3rem;
+    color:var(--olive);
+  }
+  nav.site a{
+    text-decoration:none;
+    font-size:0.95rem;
+    color:var(--olive);
+    margin-left:1.5rem;
+    border-bottom:1px solid transparent;
+  }
+  nav.site a:hover{border-bottom-color:var(--olive);}
+
+  .hero{
+    max-width:920px;
+    margin:0 auto;
+    padding:2.5rem 1.5rem 3.5rem;
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:2.5rem;
+    align-items:end;
+    border-bottom:1px solid var(--line);
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 5vw, 3.6rem);
+    line-height:1.05;
+    letter-spacing:-0.01em;
+  }
+  .hero p.lede{
+    max-width:38ch;
+    margin-top:1rem;
+    color:var(--olive-deep);
+    font-size:1.05rem;
+  }
+  .hero .side{
+    border-left:1px solid var(--line);
+    padding-left:1.8rem;
+  }
+  .hero .side .count{
+    font-family:'Fraunces', serif;
+    font-size:3rem;
+    color:var(--tomato);
+    line-height:1;
+  }
+  .hero .side .count-label{
+    font-size:0.95rem;
+    color:var(--olive);
+    margin-top:0.3rem;
+  }
+
+  main{
+    max-width:920px;
+    margin:0 auto;
+    padding:3rem 1.5rem 5rem;
+  }
+
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:1.8rem;
+  }
+  .section-head h2{font-size:1.5rem;}
+  .section-head span{font-size:0.95rem;color:var(--olive);}
+
+  .recipe-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:2px;
+    padding:2rem 2.2rem;
+    margin-bottom:1.6rem;
+    position:relative;
+    display:grid;
+    grid-template-columns:1fr 1.6fr;
+    gap:2rem;
+  }
+  .recipe-card::before{
+    content:"";
+    position:absolute;
+    top:0; left:0;
+    width:5px;
+    height:100%;
+    background:var(--tomato);
+  }
+  .recipe-card:nth-of-type(2)::before{background:var(--lemon);}
+
+  .recipe-meta{
+    border-right:1px solid var(--line);
+    padding-right:2rem;
+  }
+  .recipe-meta h3{
+    font-size:1.6rem;
+    margin-bottom:0.6rem;
+  }
+  .recipe-meta .facts{
+    color:var(--olive);
+    font-size:0.95rem;
+    margin-bottom:1.2rem;
+  }
+  .recipe-meta .facts b{color:var(--tomato);font-weight:600;}
+  .recipe-meta .ingredients-title{
+    font-size:0.9rem;
+    color:var(--olive-deep);
+    margin-bottom:0.4rem;
+    font-weight:600;
+  }
+  .recipe-meta ul{
+    margin:0;
+    padding-left:1.1rem;
+    color:var(--ink);
+  }
+  .recipe-meta ul li{margin-bottom:0.25rem;}
+
+  .recipe-body .steps-title{
+    font-size:0.9rem;
+    color:var(--olive-deep);
+    margin-bottom:0.5rem;
+    font-weight:600;
+  }
+  .recipe-body p{
+    margin:0;
+    color:var(--ink);
+  }
+
+  footer{
+    max-width:920px;
+    margin:0 auto;
+    padding:2rem 1.5rem 3rem;
+    border-top:1px solid var(--line);
+    color:var(--olive);
+    font-size:0.9rem;
+    display:flex;
+    justify-content:space-between;
+  }
+
+  @media (max-width:720px){
+    .hero{grid-template-columns:1fr;}
+    .hero .side{border-left:none;border-top:1px solid var(--line);padding-left:0;padding-top:1.2rem;}
+    .recipe-card{grid-template-columns:1fr;padding:1.6rem;}
+    .recipe-meta{border-right:none;padding-right:0;border-bottom:1px solid var(--line);padding-bottom:1.2rem;margin-bottom:1.2rem;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+
+html,body{scrollbar-width:none}::-webkit-scrollbar{display:none}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="brand">The Sunday Table</div>
+  <nav class="site">
+    <a href="#recipes">Recipes</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <h1>Cooked slowly,<br>written down simply.</h1>
+    <p class="lede">A small, growing collection of the meals worth repeating — the ones you can make on a weeknight and still feel a little proud of.</p>
+  </div>
+  <div class="side">
+    <div class="count">2</div>
+    <div class="count-label">recipes in the collection</div>
+  </div>
+</section>
+
+<main id="recipes">
+  <div class="section-head">
+    <h2>Recipes</h2>
+    <span>Newest first</span>
+  </div>
+
+  <article class="recipe-card">
+    <div class="recipe-meta">
+      <h3>Lemon &amp; herb pasta</h3>
+      <div class="facts"><b>25 min</b> · Serves 2</div>
+      <div class="ingredients-title">Ingredients</div>
+      <ul>
+        <li>Pasta</li>
+        <li>Lemon</li>
+        <li>Olive oil</li>
+        <li>Cherry tomatoes</li>
+        <li>Fresh basil</li>
+      </ul>
+    </div>
+    <div class="recipe-body">
+      <div class="steps-title">Method</div>
+      <p>Cook the pasta until just tender. Toss with olive oil and lemon, fold in the tomatoes, and finish with torn basil. Serve warm.</p>
+    </div>
+  </article>
+
+  <article class="recipe-card">
+    <div class="recipe-meta">
+      <h3>Simple tomato salad</h3>
+      <div class="facts"><b>10 min</b></div>
+      <div class="ingredients-title">Ingredients</div>
+      <ul>
+        <li>Tomatoes</li>
+        <li>Olive oil</li>
+        <li>Fresh basil</li>
+        <li>Pinch of salt</li>
+      </ul>
+    </div>
+    <div class="recipe-body">
+      <div class="steps-title">Method</div>
+      <p>Slice the tomatoes, drizzle with olive oil, and finish with basil and salt.</p>
+    </div>
+  </article>
+</main>
+
+<footer>
+  <span>The Sunday Table</span>
+  <span>Made with what's in the kitchen.</span>
+</footer>
+
+</body>
+</html>
