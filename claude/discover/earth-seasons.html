@@ -1,0 +1,272 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Earth and the seasons</title><style>:root{color-scheme:dark}html,body{background:#111110!important;color:#e9e7e1}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+<h2 class="sr-only">Animated visualization showing why Earth has seasons due to its 23.5-degree axial tilt as it orbits the Sun.</h2>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: transparent; font-family: var(--font-sans, system-ui, sans-serif); }
+  .container { width: 100%; max-width: 700px; margin: 0 auto; padding: 16px; }
+  canvas { display: block; width: 100%; border-radius: 12px; background: #0a0e27; }
+  .controls {
+    display: flex; align-items: center; gap: 12px; margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .controls button {
+    background: var(--color-accent-600, #6366f1);
+    color: #fff; border: none; border-radius: 8px;
+    padding: 6px 16px; font-size: 13px; cursor: pointer;
+    font-family: inherit;
+  }
+  .controls button:hover { opacity: 0.85; }
+  .season-label {
+    font-size: 13px; font-weight: 600;
+    color: var(--color-text-primary, #e2e8f0);
+    min-width: 160px;
+  }
+  .speed-control { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+  .speed-control label { font-size: 12px; color: var(--color-text-secondary, #94a3b8); }
+  .speed-control input { width: 80px; accent-color: var(--color-accent-600, #6366f1); }
+</style>
+
+<div class="container">
+  <canvas id="c" width="700" height="460"></canvas>
+  <div class="controls">
+    <button id="playBtn">Pause</button>
+    <div class="season-label" id="seasonLabel">Summer (Northern)</div>
+    <div class="speed-control">
+      <label>Speed</label>
+      <input type="range" id="speed" min="0.2" max="3" step="0.1" value="1">
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const W = 700, H = 460;
+canvas.width = W; canvas.height = H;
+
+let angle = 0;
+let playing = true;
+let speedMul = 1;
+const TILT = 23.5 * Math.PI / 180;
+
+const playBtn = document.getElementById('playBtn');
+const seasonLabel = document.getElementById('seasonLabel');
+const speedSlider = document.getElementById('speed');
+
+playBtn.addEventListener('click', () => {
+  playing = !playing;
+  playBtn.textContent = playing ? 'Pause' : 'Play';
+});
+speedSlider.addEventListener('input', (e) => { speedMul = parseFloat(e.target.value); });
+
+const sunX = W / 2, sunY = H / 2 - 10;
+const orbitRx = 260, orbitRy = 120;
+
+function getSeasonName(a) {
+  const norm = ((a % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+  if (norm < Math.PI * 0.5) return { n: 'Summer', s: 'Winter', color: '#fbbf24' };
+  if (norm < Math.PI) return { n: 'Autumn', s: 'Spring', color: '#f97316' };
+  if (norm < Math.PI * 1.5) return { n: 'Winter', s: 'Summer', color: '#60a5fa' };
+  return { n: 'Spring', s: 'Autumn', color: '#34d399' };
+}
+
+function drawSunGlow() {
+  const grad = ctx.createRadialGradient(sunX, sunY, 8, sunX, sunY, 90);
+  grad.addColorStop(0, 'rgba(255, 200, 50, 0.4)');
+  grad.addColorStop(0.5, 'rgba(255, 160, 30, 0.1)');
+  grad.addColorStop(1, 'rgba(255, 160, 30, 0)');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(sunX, sunY, 90, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawSun() {
+  drawSunGlow();
+  const grad = ctx.createRadialGradient(sunX - 4, sunY - 4, 2, sunX, sunY, 22);
+  grad.addColorStop(0, '#fff7a0');
+  grad.addColorStop(0.4, '#ffd700');
+  grad.addColorStop(1, '#ff9900');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(sunX, sunY, 22, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 11px system-ui, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('Sun', sunX, sunY + 38);
+}
+
+function drawOrbitPath() {
+  ctx.strokeStyle = 'rgba(100, 120, 180, 0.25)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 6]);
+  ctx.beginPath();
+  ctx.ellipse(sunX, sunY, orbitRx, orbitRy, 0, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function drawEarth(ex, ey, a) {
+  const r = 18;
+
+  // Axis line
+  const axLen = 34;
+  const axTopX = ex + Math.sin(TILT) * axLen;
+  const axTopY = ey - Math.cos(TILT) * axLen;
+  const axBotX = ex - Math.sin(TILT) * axLen;
+  const axBotY = ey + Math.cos(TILT) * axLen;
+
+  ctx.strokeStyle = 'rgba(200, 210, 255, 0.5)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([3, 3]);
+  ctx.beginPath();
+  ctx.moveTo(axTopX, axTopY);
+  ctx.lineTo(axBotX, axBotY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Earth body
+  ctx.save();
+  ctx.translate(ex, ey);
+  ctx.rotate(TILT);
+
+  // Base circle
+  const earthGrad = ctx.createRadialGradient(-3, -3, 1, 0, 0, r);
+  earthGrad.addColorStop(0, '#5b9bd5');
+  earthGrad.addColorStop(0.7, '#2563eb');
+  earthGrad.addColorStop(1, '#1e3a8a');
+  ctx.fillStyle = earthGrad;
+  ctx.beginPath();
+  ctx.arc(0, 0, r, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Simple land masses
+  ctx.fillStyle = '#22c55e';
+  // Americas-ish
+  ctx.beginPath();
+  ctx.ellipse(-5, -4, 5, 7, -0.3, 0, Math.PI * 2);
+  ctx.fill();
+  // Europe/Africa-ish
+  ctx.beginPath();
+  ctx.ellipse(6, 0, 4, 8, 0.1, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Sunlight shading - figure out which side faces the Sun
+  const sunAngle = Math.atan2(sunY - ey, sunX - ex) - TILT;
+  const shadowGrad = ctx.createLinearGradient(
+    Math.cos(sunAngle) * r, Math.sin(sunAngle) * r,
+    -Math.cos(sunAngle) * r, -Math.sin(sunAngle) * r
+  );
+  shadowGrad.addColorStop(0, 'rgba(0,0,0,0)');
+  shadowGrad.addColorStop(0.45, 'rgba(0,0,0,0.05)');
+  shadowGrad.addColorStop(0.65, 'rgba(0,0,0,0.4)');
+  shadowGrad.addColorStop(1, 'rgba(0,0,0,0.7)');
+  ctx.fillStyle = shadowGrad;
+  ctx.beginPath();
+  ctx.arc(0, 0, r, 0, Math.PI * 2);
+  ctx.fill();
+
+  // N/S labels
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 8px system-ui, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('N', 0, -r - 6);
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.fillText('S', 0, r + 12);
+
+  ctx.restore();
+
+  // Sunlight rays toward Earth
+  const dist = Math.sqrt((ex - sunX) ** 2 + (ey - sunY) ** 2);
+  const dx = (ex - sunX) / dist;
+  const dy = (ey - sunY) / dist;
+  ctx.strokeStyle = 'rgba(255, 220, 80, 0.15)';
+  ctx.lineWidth = 1;
+  for (let i = -2; i <= 2; i++) {
+    const ox = -dy * i * 8;
+    const oy = dx * i * 8;
+    ctx.beginPath();
+    ctx.moveTo(sunX + dx * 30 + ox, sunY + dy * 30 + oy);
+    ctx.lineTo(ex - dx * (r + 4) + ox * 0.5, ey - dy * (r + 4) + oy * 0.5);
+    ctx.stroke();
+  }
+}
+
+function drawMonthMarkers() {
+  const months = ['Jun','Sep','Dec','Mar'];
+  const angles = [0, Math.PI * 0.5, Math.PI, Math.PI * 1.5];
+  ctx.fillStyle = 'rgba(160, 175, 210, 0.5)';
+  ctx.font = '10px system-ui, sans-serif';
+  ctx.textAlign = 'center';
+  for (let i = 0; i < 4; i++) {
+    const mx = sunX + Math.cos(angles[i]) * (orbitRx + 22);
+    const my = sunY + Math.sin(angles[i]) * (orbitRy + 18);
+    ctx.fillText(months[i], mx, my + 4);
+  }
+}
+
+function drawTiltAnnotation() {
+  ctx.fillStyle = 'rgba(200, 210, 240, 0.6)';
+  ctx.font = '11px system-ui, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('23.5° axial tilt', 16, 28);
+
+  ctx.fillStyle = 'rgba(160, 175, 210, 0.4)';
+  ctx.font = '10px system-ui, sans-serif';
+  ctx.fillText('Northern Hemisphere seasons shown', 16, 44);
+}
+
+function drawStars() {
+  // Seed-based pseudo-random stars
+  const stars = [];
+  let seed = 42;
+  function rand() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+  for (let i = 0; i < 60; i++) {
+    stars.push({ x: rand() * W, y: rand() * H, s: rand() * 1.2 + 0.3, b: rand() });
+  }
+  stars.forEach(s => {
+    const flicker = 0.6 + 0.4 * Math.sin(Date.now() * 0.001 + s.b * 10);
+    ctx.fillStyle = `rgba(200, 210, 255, ${0.3 * flicker})`;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.s, 0, Math.PI * 2);
+    ctx.fill();
+  });
+}
+
+function frame() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#0a0e27';
+  ctx.fillRect(0, 0, W, H);
+
+  drawStars();
+  drawTiltAnnotation();
+  drawOrbitPath();
+  drawMonthMarkers();
+
+  const ex = sunX + Math.cos(angle) * orbitRx;
+  const ey = sunY + Math.sin(angle) * orbitRy;
+
+  // Draw things in correct z-order
+  const earthBehind = Math.sin(angle) < 0;
+  if (earthBehind) {
+    drawEarth(ex, ey, angle);
+    drawSun();
+  } else {
+    drawSun();
+    drawEarth(ex, ey, angle);
+  }
+
+  // Season info
+  const season = getSeasonName(angle);
+  seasonLabel.textContent = `${season.n} (Northern) / ${season.s} (Southern)`;
+  seasonLabel.style.color = season.color;
+
+  if (playing) angle += 0.008 * speedMul;
+
+  requestAnimationFrame(frame);
+}
+
+frame();
+</script>
+<style>.container{padding:8px 0}canvas{height:calc(100vh - 76px);width:100%;object-fit:contain}.controls{margin-top:10px;gap:8px}</style></html>

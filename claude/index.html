@@ -9,7 +9,7 @@
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    background: #1a1915;
+    background: #111110;
     color: #e8e5dc;
     font: 16px/1.6 'Inter', system-ui, sans-serif;
   }
@@ -48,16 +48,19 @@
     display: flex;
     flex-direction: column;
     padding: 28px;
-    border: 1px solid rgba(222, 115, 86, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 16px;
     color: inherit;
     text-decoration: none;
-    background: #211f1a;
+    background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
+    -webkit-backdrop-filter: blur(20px) saturate(120%);
+    backdrop-filter: blur(20px) saturate(120%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.065), 0 12px 32px rgba(0,0,0,.16);
     transition: border-color 0.25s ease, background 0.25s ease;
   }
   .bet:hover {
     border-color: #DE7356;
-    background: #2a2722;
+    background: linear-gradient(145deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
   }
   .bet.coming-soon {
     opacity: 0.35;
@@ -99,13 +102,11 @@
     color: #6e6b62;
     line-height: 1.7;
   }
-  .author {
-    position: fixed;
-    bottom: 20px;
-    right: 26px;
-    font-size: 13px;
-    color: #6e6b62;
-    letter-spacing: 0.02em;
+  .title-area { display: flex; align-items: center; justify-content: space-between; gap: 32px; padding-bottom: 14px; }
+  .title-character { width: 156px; height: auto; flex: 0 0 auto; object-fit: contain; mix-blend-mode: screen; image-rendering: pixelated; }
+  @media (max-width: 600px) {
+    .title-area { gap: 16px; }
+    .title-character { width: 88px; }
   }
   a:focus-visible {
     outline: 2px solid #DE7356;
@@ -119,8 +120,10 @@
 </head>
 <body>
 <main>
-  <h1>Claude activation · Three growth experiments</h1>
-  <p class="subtitle">Lauren Hodge</p>
+  <header class="title-area">
+    <div><h1>Claude activation</h1><p class="subtitle">Lauren Hodge</p></div>
+    <img class="title-character" src="orange-guy-medium.gif" alt="" width="156" height="120">
+  </header>
   <div class="divider"></div>
   <div class="grid">
     <div class="bet coming-soon">
@@ -128,13 +131,13 @@
       <h2>TBD</h2>
       <p>Coming soon.</p>
     </div>
-    <a class="bet" href="connect/">
+    <a class="bet" href="https://laureneh.dev/claude/connect/">
       <span class="bet-number">(2) Medium bet · ~2 weeks</span>
       <h2>Connector Activation</h2>
-      <p>Surface connectors through a visible entry point and a lightweight nudge for new users. After connection, suggest useful actions that make the value of granting access clear and remove the burden of inventing a first task.</p>
+      <p>Help new users discover connectors through a visible entry point, then suggest useful tasks immediately after connection, making the value clear and reducing the burden of inventing a task.</p>
       <span class="open">Explore prototype →</span>
     </a>
-    <a class="bet" href="discover/">
+    <a class="bet" href="https://laureneh.dev/claude/discover/">
       <span class="bet-number">(3) Big bet · 1–2 months</span>
       <h2>Discover</h2>
       <p>A browsable discovery destination alongside chat that brings Claude’s capabilities to life through guided examples and interactive demos. Users explore what’s possible, find something relevant, and move into a real conversation with one click.</p>
@@ -142,7 +145,6 @@
     </a>
   </div>
   <footer>Independent concept prototypes created for this interview assignment. All conversations and account data are simulated. These prototypes will be taken offline on October 1, 2026.</footer>
-  <div class="author">Lauren Hodge</div>
 </main>
 </body>
 </html>

@@ -1,0 +1,36 @@
+body .photo-art{transform:translateY(-27px);position:relative;display:flex;justify-content:center;align-items:center}
+body .photo-print{width:96px;height:108px;padding:5px 5px 14px;background:#dad6cd;border-radius:5px;transform:rotate(-10deg);box-shadow:0 12px 20px #0004}
+body .photo-print img{width:100%;height:100%;object-fit:cover;border-radius:2px}
+body .photo-art>svg{position:absolute;width:50px;height:50px;right:18%;bottom:0;color:#DE7356;filter:drop-shadow(0 3px 3px #0005)}
+body .plant-request{display:flex;flex-direction:column;gap:12px}
+body .plant-request img{width:150px;max-height:160px;object-fit:cover;border-radius:9px;align-self:flex-end}
+body .plant-answer{font:13px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e4e1d9}
+body .plant-answer p{margin:14px 0}body .plant-answer small{font-size:9px;color:#99968e}body .plant-answer summary{cursor:pointer;color:#b9b5ab;font-size:12px}
+body .plant-follow{display:flex;gap:7px;flex-wrap:wrap;margin:16px 0}body .plant-follow button{font-size:11px;border:1px solid #46443f;border-radius:8px;padding:7px 9px}
+body .personal-photo-preview{position:relative;width:88px;margin:0 0 12px}body .personal-photo-preview[hidden]{display:none}body .personal-photo-preview img{display:block;width:88px;height:88px;object-fit:cover;border-radius:8px}body .personal-photo-preview button{position:absolute;right:-5px;top:-5px;border-radius:50%;background:#333;width:22px;height:22px}
+body .photo-attach{padding:0;color:#aaa69d}body .photo-attach svg{width:19px;height:19px}
+body .drawer.photo-demo:not(.gallery-mode) .drawer-body{height:auto;max-height:none;flex:1 1 auto;min-height:0}
+body .plant-photo-chip{display:inline-flex;flex-direction:column;gap:4px;padding:5px;background:#292927;border:1px solid #48453e;border-radius:8px;max-width:105px}
+body .plant-photo-chip img{width:85px;height:85px;object-fit:cover;border-radius:5px}
+body .plant-photo-chip small{font:9px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#bcb8af}
+body .photo-demo .submitted-file{display:block;margin-bottom:10px}
+body .photo-demo .demo-submitted-request.has-attachment{display:flex;flex-direction:column;align-items:flex-end}
+body .plant-answer li{margin-bottom:10px}body .plant-answer ul,body .plant-answer ol{padding-left:21px}
+body .travel-answer{font:13px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e5e2da}body .travel-answer p{margin:14px 0}body .travel-answer a{color:#d6bca5;text-underline-offset:3px}body .travel-answer li{margin-bottom:9px}
+body .travel-file-status{color:#89877e;font-size:10px;margin:10px 0 18px}
+body .travel-file{display:flex;align-items:center;gap:13px;border:1px solid #42494e;border-radius:12px;background:linear-gradient(110deg,#131a20,#15191c);padding:15px 13px;overflow:hidden;margin:16px 0}
+body .travel-file-icon{height:58px;width:42px;flex-shrink:0;border:1px solid #385f89;border-radius:6px;background:linear-gradient(#133454,#05203b);color:#80bfff;display:grid;place-items:center;font-size:25px;margin-bottom:-24px}
+body .travel-file-name{flex:1;font-size:12px;color:#e6e3dc}body .travel-file-name small{display:block;color:#96968e;font-size:10px;margin-top:3px}
+body .travel-file>a{background:#2c3033;color:#e7e5e0;text-decoration:none;border-radius:7px;padding:7px;font-size:10px;white-space:nowrap}body .travel-file>a span{border-left:1px solid #45484b;padding-left:7px;margin-left:5px}
+body .travel-file-icon svg{width:15px;height:19px;stroke-width:1.2}
+body .demo-assistant-row.is-thinking{display:flex;align-items:center;gap:9px;color:#a7a399;font-size:12px}
+body .demo-assistant-row.is-thinking .claude-logo,body .demo-assistant-row.is-thinking img{width:22px;height:22px;object-fit:contain;animation:quiet-thought 1.8s ease-in-out infinite!important}
+@keyframes quiet-thought{0%,100%{opacity:.65;transform:scale(.94)}50%{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){body .demo-assistant-row.is-thinking img{animation:none!important}}
+
+body .main-website-thinking:not(.recording-ended) .claude-logo{animation:quiet-thought 1.8s ease-in-out infinite!important}@media(prefers-reduced-motion:reduce){body .main-website-thinking .claude-logo{animation:none!important}}
+/* Bring the next action directly under the completed demo. */
+body .drawer:not(.gallery-mode):has(#demoInputDock.hidden) .drawer-body{height:auto;flex:0 1 auto;max-height:calc(100dvh - 330px);padding-bottom:4px}
+body .drawer:not(.gallery-mode):has(#demoInputDock.hidden) .drawer-foot{padding-top:8px;padding-bottom:16px}
+body .drawer:not(.gallery-mode):has(#demoInputDock.hidden) .response-end-mark{margin-bottom:8px}
+body .home:not(.has-conversation):not(.website-replay){margin-top:calc(40dvh - 85px)!important}
