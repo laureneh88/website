@@ -1063,7 +1063,7 @@ function startMainWebsiteFlow(){
  const prompt=greetDemoPrompt('Help me make a website');let n=0;
  function type(){input.value=prompt.slice(0,++n);syncComposer();if(n<prompt.length){later(type,40);return;}
   later(()=>{
-   append(prompt,'main-website-user');input.value='';input.placeholder='Write a message…';syncComposer();
+   append(prompt,'main-website-user');input.closest('.composer').classList.remove('experiment-chat-highlight');input.value='';input.placeholder='Write a message…';syncComposer();
    const thinking=append('','main-website-thinking');thinking.innerHTML=claudeMark+'<span>Thinking…</span>';
    later(async()=>{thinking.remove();await streamResponseElement(append("I'd love to help. To build something that actually fits, let me get a quick sense of what you're going for.",'main-website-answer'));footer();later(()=>question(0),650);},1500);
   },700);
