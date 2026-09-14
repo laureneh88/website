@@ -4,8 +4,8 @@ const timers=new Set();function later(fn,ms){const id=setTimeout(()=>{timers.del
 function clearTimers(){timers.forEach(clearTimeout);timers.clear();generation++}
 function email(){clearTimers();mode='email';$('#app').hidden=true;$('#envelope').hidden=true;$('#email').hidden=false;$('#artifactApp').hidden=true;$('#skip').hidden=true;window.scrollTo({top:0,behavior:'smooth'})}
 function start(){clearTimers();mode='intro';$('#app').hidden=false;$('#app').classList.remove('depart');$('#app').querySelector('.pixel-dissolve')?.remove();$('#email').hidden=true;$('#artifactApp').hidden=true;$('#envelope').hidden=true;$('#skip').hidden=false;$('#days').textContent='1 day';reversing=false;paused=false;let day=1;
- function tick(){if(day<7){$('#days').textContent=`${++day} days`;later(tick,Math.max(80,440-day*55))}else later(()=>{if(reduced){email();return}pixelateApp();$('#app').classList.add('depart');later(()=>{$('#app').hidden=true;$('#envelope').hidden=false;later(email,2050)},1350)},850)}
- later(tick,650);
+ function tick(){if(day<7){$('#days').textContent=`${++day} days`;later(tick,1100)}else later(()=>{if(reduced){email();return}pixelateApp();$('#app').classList.add('depart');later(()=>{$('#app').hidden=true;$('#envelope').hidden=false;later(email,2050)},1350)},850)}
+ later(tick,1100);
 }
 function openArtifact(){clearTimers();mode='artifact';$('#email').hidden=true;$('#artifactApp').hidden=false;reversing=false;paused=false;$('#pause').textContent='Pause';$('#version').textContent='Original';$('#messages').innerHTML='<p class="assistant">Here’s your gravity playground. Adjust the gravity or add a ball to try it out.</p>';$('#editPrompt').value='Make gravity reverse every five seconds';$('#sendEdit').disabled=false;$('#editPrompt').disabled=false;$('#sendEdit').textContent='Send ↑';$('#gravity').value='9.8';$('#gravityValue').textContent='9.8';$('#gravityStatus').textContent='↓ Gravity pulls downward';worlds[1].reset();window.scrollTo({top:0,behavior:'smooth'});$('#editPrompt').focus({preventScroll:true})}
 $('#restart').onclick=start;$('#skip').onclick=email;$('#makeYours').onclick=openArtifact;$('#backEmail').onclick=email;
